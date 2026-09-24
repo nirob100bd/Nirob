@@ -1,0 +1,69 @@
+<UserControl x:Class="Swifter.Theme.CustomControls.StatusOverlayControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             IsHitTestVisible="True"
+             Background="Transparent">
+    <UserControl.Resources>
+        <Style x:Key="OverlayPill" TargetType="Border">
+            <Setter Property="CornerRadius" Value="14" />
+            <Setter Property="Background" Value="{Binding PillBackground, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="BorderBrush" Value="{Binding PillBorder, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="Margin" Value="4" />
+        </Style>
+        <Style x:Key="OverlayBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="{Binding TitleBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+    </UserControl.Resources>
+    <Grid IsHitTestVisible="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,54,14,0" IsHitTestVisible="True">
+            <Border x:Name="ToastPill" Style="{StaticResource OverlayPill}" Visibility="Collapsed" MaxWidth="340">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="ToastIcon" Text="ℹ" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{Binding TitleBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    <TextBlock x:Name="ToastText" Text="" FontSize="12" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{Binding TitleBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch" Margin="8,0,8,8" IsHitTestVisible="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Border x:Name="StatusPill" Style="{StaticResource OverlayPill}" HorizontalAlignment="Left" Visibility="Collapsed" MaxWidth="480">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="StatusIcon" Text="⬇" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{Binding TitleBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    <TextBlock x:Name="StatusTitle" Text="" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{Binding TitleBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    <TextBlock x:Name="StatusDetail" Text="" FontSize="12" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{Binding SubtitleBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                </StackPanel>
+            </Border>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Border x:Name="SpeedPill" Style="{StaticResource OverlayPill}" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="⚡" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center" Foreground="{Binding TitleBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                        <TextBlock x:Name="SpeedText" Text="" FontSize="12" FontFamily="Cascadia Code, Consolas" VerticalAlignment="Center" Foreground="{Binding TitleBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    </StackPanel>
+                </Border>
+                <Border x:Name="MemPill" Style="{StaticResource OverlayPill}" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🧠" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center" Foreground="{Binding TitleBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                        <TextBlock x:Name="MemText" Text="" FontSize="12" FontFamily="Cascadia Code, Consolas" VerticalAlignment="Center" Foreground="{Binding TitleBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    </StackPanel>
+                </Border>
+                <Border x:Name="GesturePill" Style="{StaticResource OverlayPill}" Visibility="Collapsed">
+                    <TextBlock x:Name="GestureText" Text="" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{Binding TitleBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

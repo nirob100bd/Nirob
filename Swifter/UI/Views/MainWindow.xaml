@@ -1,0 +1,193 @@
+<Window x:Class="Swifter.UI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Swifter.Theme.CustomControls"
+        xmlns:views="clr-namespace:Swifter.UI.Views"
+        Title="Swifter"
+        Width="1280" Height="840"
+        MinWidth="720" MinHeight="480"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        AllowsTransparency="False"
+        WindowStyle="SingleBorderWindow"
+        UseLayoutRounding="True"
+        TextOptions.TextFormattingMode="Display"
+        PreviewKeyDown="OnWindowKeyDown"
+        Closing="OnWindowClosing"
+        StateChanged="OnWindowStateChanged"
+        Loaded="OnWindowLoaded">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <Style x:Key="NavChip" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="Margin" Value="2,0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+    </Window.Resources>
+    <Border x:Name="RootChrome" Background="{DynamicResource WindowBgBrush}" CornerRadius="0" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1">
+        <Grid x:Name="RootGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid x:Name="TabArea" Grid.Row="0" Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="VerticalTabRail" Grid.Column="0" Width="220" Background="{DynamicResource TabSurfaceBrush}" Visibility="Collapsed">
+                    <controls:TabStripControl x:Name="VerticalTabStrip"
+                                              IsVertical="True"
+                                              VerticalAlignment="Stretch"
+                                              HorizontalAlignment="Stretch"
+                                              TabActivated="OnTabActivated"
+                                              TabCloseRequested="OnTabClose"
+                                              NewTabRequested="OnNewTab"
+                                              BackRequested="OnBack"
+                                              ForwardRequested="OnForward"
+                                              ReloadRequested="OnReload"
+                                              HomeRequested="OnHome"
+                                              MenuRequested="OnMenu"
+                                              VerticalLayoutToggled="OnVerticalLayoutToggled"
+                                              SplitToggled="OnSplitToggled" />
+                </Grid>
+                <controls:TabStripControl x:Name="TopTabStrip"
+                                          Grid.Column="1"
+                                          IsVertical="False"
+                                          HorizontalAlignment="Stretch"
+                                          TabActivated="OnTabActivated"
+                                          TabCloseRequested="OnTabClose"
+                                          NewTabRequested="OnNewTab"
+                                          BackRequested="OnBack"
+                                          ForwardRequested="OnForward"
+                                          ReloadRequested="OnReload"
+                                          HomeRequested="OnHome"
+                                          MenuRequested="OnMenu"
+                                          VerticalLayoutToggled="OnVerticalLayoutToggled"
+                                          SplitToggled="OnSplitToggled" />
+            </Grid>
+            <Border Grid.Row="1" Background="{DynamicResource TabSurfaceBrush}" Padding="6,4" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="BackNav" Style="{StaticResource NavChip}" Content="←" Click="OnBack" ToolTip="Back (Alt+←)" />
+                        <Button x:Name="ForwardNav" Style="{StaticResource NavChip}" Content="→" Click="OnForward" ToolTip="Forward (Alt+→)" />
+                        <Button x:Name="ReloadNav" Style="{StaticResource NavChip}" Content="⟳" Click="OnReload" ToolTip="Reload (Ctrl+R)" />
+                    </StackPanel>
+                    <controls:AddressBarControl x:Name="AddressBar"
+                                                 Grid.Column="1"
+                                                 NavigationRequested="OnAddressNavigation"
+                                                 ShieldRequested="OnShieldClick"
+                                                 StarRequested="OnStarClick"
+                                                 ReaderRequested="OnReaderClick"
+                                                 CopyCleanLinkRequested="OnCopyCleanLink"
+                                                 MediaDownloadRequested="OnMediaDownloadClick"
+                                                 LensRequested="OnLensClick" />
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="PaletteButton" Style="{StaticResource NavChip}" Content="⌘ K" Click="OnPaletteClick" ToolTip="Command palette (Ctrl+K)" />
+                        <Button x:Name="FindButton" Style="{StaticResource NavChip}" Content="⌕" Click="OnFindClick" ToolTip="Find (Ctrl+F)" />
+                        <Button x:Name="MenuNav" Style="{StaticResource NavChip}" Content="⋮" Click="OnMenu" ToolTip="Main menu" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Grid x:Name="FindBar" Grid.Row="2" Background="{DynamicResource TabSurfaceBrush}" Padding="8,4" Visibility="Collapsed" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="0,0,0,1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="240" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Find:" VerticalAlignment="Center" Margin="0,0,8,0" />
+                <TextBox x:Name="FindBox" Grid.Column="1" Padding="6,4" KeyDown="OnFindKeyDown" />
+                <TextBlock x:Name="FindCount" Grid.Column="2" Text="" VerticalAlignment="Center" Margin="8,0" />
+                <Button Grid.Column="3" Content="◀" Style="{StaticResource NavChip}" Click="OnFindPrev" />
+                <Button Grid.Column="4" Content="▶" Style="{StaticResource NavChip}" Click="OnFindNext" />
+                <Button Grid.Column="5" Content="✕" HorizontalAlignment="Right" Style="{StaticResource NavChip}" Click="OnFindClose" />
+            </Grid>
+            <Grid x:Name="BrowserArea" Grid.Row="3" Background="#FFFFFF" MouseMove="OnBrowserMouseMove" MouseLeftButtonDown="OnBrowserMouseDown" MouseLeftButtonUp="OnBrowserMouseUp" MouseRightButtonDown="OnBrowserRightDown" MouseRightButtonUp="OnBrowserRightUp">
+                <Grid x:Name="SingleHostGrid">
+                    <Microsoft.Web.WebView2.Wpf.WebView2 x:Name="WebView" />
+                </Grid>
+                <Grid x:Name="SplitHostGrid" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="4" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Grid.Column="0" BorderBrush="#0078D4" BorderThickness="2" CornerRadius="4" Background="Transparent" />
+                    <Border Grid.Row="0" Grid.Column="2" BorderBrush="#808080" BorderThickness="1" CornerRadius="4" Background="Transparent" />
+                    <Border Grid.Row="2" Grid.Column="0" BorderBrush="#808080" BorderThickness="1" CornerRadius="4" Background="Transparent" />
+                    <Border Grid.Row="2" Grid.Column="2" BorderBrush="#808080" BorderThickness="1" CornerRadius="4" Background="Transparent" />
+                </Grid>
+                <Border x:Name="WebPanelHost" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="360" Visibility="Collapsed" Margin="0,0,0,0">
+                    <controls:WebPanelControl x:Name="WebPanel"
+                                              CollapseRequested="OnPanelCollapse"
+                                              PanelActivated="OnPanelActivated"
+                                              AddPanelRequested="OnAddPanel" />
+                </Border>
+                <Grid x:Name="PanelWebViewHost" HorizontalAlignment="Right" VerticalAlignment="Top" Width="360" Height="520" Margin="0,8,8,8" Visibility="Collapsed" Panel.ZIndex="40" />
+                <views:CommandPaletteOverlay x:Name="PaletteOverlay" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed" Panel.ZIndex="90" />
+                <controls:StatusOverlayControl x:Name="Overlay" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+            </Grid>
+            <Border Grid.Row="4" Background="{DynamicResource TabSurfaceBrush}" Padding="10,4" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="0,1,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="StatusLeft" Grid.Column="0" Text="Ready" FontSize="11" VerticalAlignment="Center" Margin="0,0,16,0" />
+                    <TextBlock x:Name="StatusCenter" Grid.Column="1" Text="" FontSize="11" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                    <TextBlock x:Name="BlockedStatus" Grid.Column="2" Text="🛡 0" FontSize="11" VerticalAlignment="Center" Margin="0,0,14,0" Foreground="#0F7B0F" />
+                    <TextBlock x:Name="SpeedStatus" Grid.Column="3" Text="" FontSize="11" VerticalAlignment="Center" Margin="0,0,14,0" FontFamily="Cascadia Code, Consolas" />
+                    <TextBlock x:Name="MemoryStatus" Grid.Column="4" Text="" FontSize="11" VerticalAlignment="Center" Margin="0,0,14,0" FontFamily="Cascadia Code, Consolas" />
+                    <TextBlock x:Name="ZoomStatus" Grid.Column="5" Text="100%" FontSize="11" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+    <Window.InputBindings>
+        <KeyBinding Key="T" Modifiers="Control" Command="{Binding NewTabCommand}" />
+        <KeyBinding Key="W" Modifiers="Control" Command="{Binding CloseTabCommand}" />
+        <KeyBinding Key="R" Modifiers="Control" Command="{Binding ReloadCommand}" />
+        <KeyBinding Key="K" Modifiers="Control" Command="{Binding TogglePaletteCommand}" />
+        <KeyBinding Key="L" Modifiers="Control" Command="{Binding AddressFocusCommand}" />
+        <KeyBinding Key="D" Modifiers="Control" Command="{Binding AddressFocusCommand}" />
+        <KeyBinding Key="OemComma" Modifiers="Control" Command="{Binding OpenSettingsCommand}" />
+        <KeyBinding Key="H" Modifiers="Control" Command="{Binding OpenHistoryCommand}" />
+        <KeyBinding Key="J" Modifiers="Control" Command="{Binding OpenDownloadsCommand}" />
+        <KeyBinding Key="D" Modifiers="Control+Shift" Command="{Binding OpenBookmarksCommand}" />
+        <KeyBinding Key="N" Modifiers="Control+Shift" Command="{Binding AddressFocusCommand}" />
+        <KeyBinding Key="S" Modifiers="Alt+Shift" Command="{Binding ToggleSplitCommand}" />
+        <KeyBinding Key="V" Modifiers="Alt+Shift" Command="{Binding ToggleVerticalTabsCommand}" />
+        <KeyBinding Key="E" Modifiers="Alt+Shift" Command="{Binding TogglePanelsCommand}" />
+        <KeyBinding Key="B" Modifiers="Alt+Shift" Command="{Binding ToggleShieldsCommand}" />
+        <KeyBinding Key="F" Modifiers="Control" Command="{Binding FindCommand}" />
+        <KeyBinding Key="P" Modifiers="Alt+Shift" Command="{Binding PipCommand}" />
+        <KeyBinding Key="Tab" Modifiers="Control" Command="{Binding NextTabCommand}" />
+        <KeyBinding Key="Tab" Modifiers="Control+Shift" Command="{Binding PrevTabCommand}" />
+        <KeyBinding Key="R" Modifiers="Control+Shift" Command="{Binding ReaderCommand}" />
+        <KeyBinding Key="T" Modifiers="Control+Shift" Command="{Binding NewTabCommand}" />
+    </Window.InputBindings>
+</Window>

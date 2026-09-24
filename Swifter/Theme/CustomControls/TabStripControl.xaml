@@ -1,0 +1,86 @@
+<UserControl x:Class="Swifter.Theme.CustomControls.TabStripControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Swifter.Theme.CustomControls"
+             Background="Transparent">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <Style x:Key="TabToggleBtn" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontFamily" Value="{StaticResource UiFont}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.85" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource AccentBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TabCloseBtn" TargetType="Button">
+            <Setter Property="Width" Value="18" />
+            <Setter Property="Height" Value="18" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="Transparent" CornerRadius="4" Width="18" Height="18">
+                            <Path Data="M0,0 L6,6 M6,0 L0,6" Stroke="{Binding TextSecondaryBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" StrokeThickness="1.4" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#33FF4D4D" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="Transparent" Height="34">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="6,0,0,0" VerticalAlignment="Center">
+                <Button x:Name="MenuButton" Style="{StaticResource FlatButton}" FontSize="16" Content="&#x2630;" Click="OnMenuClick" Padding="8,2" ToolTip="Main menu" />
+                <Button x:Name="BackButton" Style="{StaticResource FlatButton}" FontSize="14" Content="&#x2190;" Click="OnBackClick" Padding="8,2" ToolTip="Back (Alt+Left)" />
+                <Button x:Name="ForwardButton" Style="{StaticResource FlatButton}" FontSize="14" Content="&#x2192;" Click="OnForwardClick" Padding="8,2" ToolTip="Forward (Alt+Right)" />
+                <Button x:Name="ReloadButton" Style="{StaticResource FlatButton}" FontSize="14" Content="&#x21BB;" Click="OnReloadClick" Padding="8,2" ToolTip="Reload (Ctrl+R)" />
+                <Button x:Name="HomeButton" Style="{StaticResource FlatButton}" FontSize="14" Content="&#x2302;" Click="OnHomeClick" Padding="8,2" ToolTip="Home" />
+            </StackPanel>
+            <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Focusable="False">
+                <StackPanel x:Name="TabContainer" Orientation="Horizontal" Background="Transparent" />
+            </ScrollViewer>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0,0,6,0" VerticalAlignment="Center">
+                <ToggleButton x:Name="VerticalLayoutToggle" Style="{StaticResource TabToggleBtn}" FontSize="13" Content="&#x25A2;" Click="OnToggleVerticalLayout" Padding="8,2" ToolTip="Toggle vertical tab sidebar" />
+                <ToggleButton x:Name="SplitToggle" Style="{StaticResource TabToggleBtn}" FontSize="13" Content="&#x25A0;" Click="OnToggleSplit" Padding="8,2" ToolTip="Split screen" />
+                <Button x:Name="NewTabButton" Style="{StaticResource AccentButton}" FontSize="16" Content="+" Click="OnNewTabClick" Padding="10,2" ToolTip="New tab (Ctrl+T)" />
+            </StackPanel>
+        </Grid>
+        <Border x:Name="TabPanelBorder" Grid.Row="1" Background="{Binding TabSurfaceBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" CornerRadius="0" Visibility="{Binding IsVertical, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVis}, ConverterParameter=invert, FallbackValue=Visible}">
+            <StackPanel x:Name="VerticalTabContainer" Orientation="Vertical" Margin="4" Visibility="Collapsed" />
+        </Border>
+    </Grid>
+</UserControl>
