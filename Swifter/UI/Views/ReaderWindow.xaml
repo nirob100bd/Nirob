@@ -1,0 +1,70 @@
+<Window x:Class="Swifter.UI.Views.ReaderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Reader — Swifter"
+        Width="960" Height="820"
+        MinWidth="520" MinHeight="420"
+        WindowStartupLocation="CenterOwner"
+        Background="#FAFAF8"
+        Loaded="OnLoaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border x:Name="Toolbar" Grid.Row="0" Background="#F0EDE6" Padding="14,10" BorderBrush="#DDD8CC" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ComboBox x:Name="FontBox" Grid.Column="0" Width="120" Margin="0,0,8,0" SelectionChanged="OnFontChanged">
+                    <ComboBoxItem Content="Sans" IsSelected="True" />
+                    <ComboBoxItem Content="Serif" />
+                    <ComboBoxItem Content="Mono" />
+                </ComboBox>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,8,0" VerticalAlignment="Center">
+                    <Button Content="A−" Width="36" Height="30" Click="OnFontSmaller" ToolTip="Smaller text" />
+                    <TextBlock x:Name="FontSizeLabel" Text="18" Width="34" TextAlignment="Center" VerticalAlignment="Center" />
+                    <Button Content="A+" Width="36" Height="30" Click="OnFontLarger" ToolTip="Larger text" />
+                </StackPanel>
+                <ComboBox x:Name="ThemeBox" Grid.Column="2" Width="110" Margin="0,0,8,0" SelectionChanged="OnThemeChanged">
+                    <ComboBoxItem Content="Light" IsSelected="True" />
+                    <ComboBoxItem Content="Sepia" />
+                    <ComboBoxItem Content="Dark" />
+                    <ComboBoxItem Content="Black" />
+                </ComboBox>
+                <ComboBox x:Name="WidthBox" Grid.Column="3" Width="100" Margin="0,0,8,0" SelectionChanged="OnWidthChanged">
+                    <ComboBoxItem Content="Narrow" />
+                    <ComboBoxItem Content="Normal" IsSelected="True" />
+                    <ComboBoxItem Content="Wide" />
+                </ComboBox>
+                <StackPanel Grid.Column="4" Orientation="Horizontal">
+                    <Button x:Name="PlayBtn" Content="🔊 Read aloud" Padding="12,6" Margin="0,0,6,0" Click="OnSpeak" ToolTip="Narrate with SpeechSynthesis (Ctrl+Enter)" />
+                    <Button x:Name="PauseBtn" Content="⏸" Padding="10,6" Margin="0,0,6,0" Click="OnPauseSpeak" ToolTip="Pause narration" />
+                    <Button x:Name="StopBtn" Content="⏹" Padding="10,6" Click="OnStopSpeak" ToolTip="Stop narration" />
+                </StackPanel>
+                <StackPanel Grid.Column="6" Orientation="Horizontal">
+                    <Button Content="⧉ Copy" Padding="10,6" Margin="0,0,6,0" Click="OnCopyText" />
+                    <Button Content="✕ Close" Padding="10,6" Click="OnCloseClick" />
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" x:Name="PageBorder" Background="#FAFAF8">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0">
+                <StackPanel Margin="0">
+                    <TextBlock x:Name="TitleBlock" Text="" FontSize="34" FontWeight="Bold" TextWrapping="Wrap" Margin="60,40,60,8" Foreground="#1B1B1F" />
+                    <TextBlock x:Name="MetaBlock" Text="" FontSize="13" TextWrapping="Wrap" Margin="60,0,60,18" Foreground="#6B6B75" />
+                    <TextBlock x:Name="ExcerptBlock" Text="" FontSize="16" TextWrapping="Wrap" Margin="60,0,60,24" FontStyle="Italic" Foreground="#44444C" />
+                    <Microsoft.Web.WebView2.Wpf.WebView2 x:Name="ArticleView" MinHeight="400" Background="Transparent" />
+                    <TextBlock x:Name="WordCountBlock" Text="" FontSize="12" Margin="60,16,60,60" Foreground="#8A8A95" />
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Window>

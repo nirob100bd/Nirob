@@ -1,0 +1,70 @@
+<UserControl x:Class="Swifter.Theme.CustomControls.AddressBarControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+    <UserControl.Resources>
+        <Style x:Key="PillBox" TargetType="Border">
+            <Setter Property="CornerRadius" Value="18" />
+            <Setter Property="Background" Value="{Binding FieldBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="BorderBrush" Value="{Binding BorderBrushColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="Padding" Value="10,0" />
+        </Style>
+        <Style x:Key="InnerBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Width" Value="26" />
+            <Setter Property="Height" Value="26" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Foreground" Value="{Binding GlyphBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Style="{StaticResource PillBox}" Margin="4,0,4,0" MinWidth="320">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="ShieldButton" Grid.Column="0" Style="{StaticResource InnerBtn}" Click="OnShieldClick" ToolTip="Shields — site privacy controls" VerticalAlignment="Center">
+                    <TextBlock x:Name="ShieldGlyph" Text="🛡" FontSize="13" />
+                </Button>
+                <TextBox x:Name="UrlBox"
+                         Grid.Column="1"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         Foreground="{Binding InputForeground, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                         CaretBrush="{Binding InputForeground, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                         FontFamily="Segoe UI, sans-serif"
+                         FontSize="13"
+                         VerticalContentAlignment="Center"
+                         Padding="6,0"
+                         KeyDown="OnUrlKeyDown"
+                         LostFocus="OnUrlLostFocus"
+                         GotKeyboardFocus="OnUrlGotFocus"
+                         ToolTip="Address and search bar" />
+                <Button x:Name="ClearButton" Grid.Column="2" Style="{StaticResource InnerBtn}" Content="✕" Click="OnClearClick" Visibility="Collapsed" VerticalAlignment="Center" ToolTip="Clear" />
+                <Button x:Name="ReaderButton" Grid.Column="3" Style="{StaticResource InnerBtn}" Content="📖" Click="OnReaderClick" Visibility="Collapsed" VerticalAlignment="Center" ToolTip="Reader mode" />
+                <Button x:Name="StarButton" Grid.Column="4" Style="{StaticResource InnerBtn}" Content="☆" Click="OnStarClick" VerticalAlignment="Center" ToolTip="Bookmark this page (Ctrl+D)" />
+            </Grid>
+        </Border>
+        <Button x:Name="CopyLinkButton" Grid.Column="1" Style="{StaticResource InnerBtn}" Content="⧉" Click="OnCopyLinkClick" HorizontalAlignment="Left" Margin="2,0" VerticalAlignment="Center" ToolTip="Copy clean link (tracking params stripped)" />
+        <Button x:Name="DownloadMediaButton" Grid.Column="2" Style="{StaticResource InnerBtn}" Content="⬇" Click="OnDownloadMediaClick" Margin="2,0" VerticalAlignment="Center" ToolTip="Sniffed media downloads" />
+        <Button x:Name="LensButton" Grid.Column="3" Style="{StaticResource InnerBtn}" Content="◫" Click="OnLensClick" Margin="2,0" VerticalAlignment="Center" ToolTip="Search image with Google Lens" />
+        <Border x:Name="ProgressRail" Grid.Column="4" Width="64" Height="3" CornerRadius="2" Background="#22000000" VerticalAlignment="Center" Margin="6,0,4,0" Visibility="Collapsed">
+            <Border x:Name="ProgressFill" HorizontalAlignment="Left" Height="3" CornerRadius="2" Background="{Binding AccentBrush, RelativeSource={RelativeSource AncestorType=UserControl}}" Width="0" />
+        </Border>
+    </Grid>
+</UserControl>
